@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Tail -f</title>
+      <!-- Load socket.io from a CDN -->
+      <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+   </head>
+   <body>
+      <h1>Log Monitoring App</h1>
+      <div id="message-container"></div>
+
+      <script>
+         // Connect to the server using Socket.io
+         var socket = io("http://localhost:3000");
+
+         // When a log update is received, append it to the message container
+         socket.on('update-log', function(data) {
+            console.log(data);
+            data.forEach(function(elem) {
+               document.getElementById('message-container').innerHTML += '<p>' + elem + '</p>';
+            });
+         });
+
+         // When the connection is initialized, load initial data
+         socket.on('init', function(data) {
+            console.log(data);
+            data.forEach(function(elem) {
+               document.getElementById('message-container').innerHTML += '<p>' + elem + '</p>';
+            });
+         });
+      </script>
+   </body>
+</html>
